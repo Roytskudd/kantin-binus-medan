@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vote for Tomorrow's Dish | BINUS Medan Canteen</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg:#f5f8fa;
+    --text:#333;
+    --surface:#ffffff;
+    --surface-alt:#f5f8fa;
+    --accent:#00AEEF;
+    --accent-strong:#0088bb;
+    --header-bg:#00AEEF;
+    --header-text:#ffffff;
+    --card-shadow:0 4px 12px rgba(0,0,0,.08);
+    --card-shadow-hover:0 8px 20px rgba(0,0,0,.12);
+    --muted:#666;
+    --muted-variant:#999;
+    --footer-bg:#003366;
+    --status-bg-cooking:#fff3cd;
+    --status-bg-ready:#d4edda;
+    --status-bg-unavailable:#f8d7da;
+    --radius: 24px;
+    --shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+[data-theme="dark"] {
+    --bg:#121620;
+    --text:#E5E9F0;
+    --surface:#1C2430;
+    --surface-alt:#16202b;
+    --accent:#4CB8FF;
+    --accent-strong:#2F8FE0;
+    --header-bg:#0D1826;
+    --header-text:#E5E9F0;
+    --card-shadow:0 4px 16px rgba(0,0,0,.35);
+    --card-shadow-hover:0 8px 24px rgba(0,0,0,.45);
+    --muted:#B0B8C2;
+    --muted-variant:#8B96A2;
+    --footer-bg:#091424;
+    --status-bg-cooking:#3D3F52;
+    --status-bg-ready:#2A3A2B;
+    --status-bg-unavailable:#4A2B2E;
+    --shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+
+[data-theme="dark"] .vote-submit {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+[data-theme="dark"] .vote-submit:hover {
+    background: var(--accent);
+    color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 15px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+}
+
+.header-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--header-text);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+nav a:hover,
+nav a.active {
+    color: #d9f4ff;
+}
+
+.theme-toggle{
+    padding:8px;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.08);
+    color:var(--header-text, var(--text));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:0.2s;
+    font-size:1.1rem;
+    line-height:1;
+}
+
+.theme-toggle:hover{
+    background:rgba(255,255,255,.15);
+}
+
+.theme-toggle i{
+    line-height:1;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    min-width:fit-content;
+}
+
+.profile{
+    font-size:1.8rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    color: var(--header-text);
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+.hero {
+    background: linear-gradient(135deg, rgba(0, 174, 239, 0.14), rgba(0, 174, 239, 0.04));
+    border: 1px solid rgba(0, 174, 239, 0.16);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    display: grid;
+    gap: 24px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 2.6vw, 3rem);
+    line-height: 1.05;
+}
+
+.hero p {
+    max-width: 760px;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+}
+
+.meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 12px 18px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.meta-badge i {
+    color: var(--accent);
+}
+
+.section-title {
+    margin: 48px 0 24px;
+    font-size: 1.85rem;
+    color: var(--accent-strong);
+}
+
+.vote-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+}
+
+.vote-panel,
+.results-panel {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+}
+
+.vote-panel h2,
+.results-panel h2 {
+    margin-bottom: 18px;
+}
+
+.vote-options {
+    display: grid;
+    gap: 16px;
+}
+
+.vote-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    padding: 18px 20px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.vote-option input {
+    width: 20px;
+    height: 20px;
+}
+
+.vote-option:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.vote-option label {
+    display: grid;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.vote-option label strong {
+    font-size: 1.02rem;
+}
+
+.vote-option label span {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.vote-submit {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    background: var(--accent);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.vote-submit:hover {
+    background: var(--accent-strong);
+    transform: translateY(-1px);
+}
+
+.vote-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.vote-message {
+    color: var(--accent-strong);
+    font-weight: 600;
+}
+
+.reset-button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    color: var(--accent);
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.reset-button:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.results-panel p {
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.75;
+}
+
+.result-item {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.result-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.result-bar {
+    position: relative;
+    height: 14px;
+    width: 100%;
+    background: var(--surface-alt);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.result-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent);
+    transition: width 0.4s ease;
+}
+
+.results-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface-alt);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.summary-card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent-strong);
+}
+
+.summary-card span {
+    color: var(--muted);
+}
+
+@media (max-width: 980px) {
+    .vote-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    nav ul {
+        justify-content: center;
+    }
+}
+</style>
+</head>
+<body>
+<header>
+    <div class="header-inner">
+        <div class="logo">
+            <i class="fas fa-utensils"></i>
+            BINUS Medan Canteen
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="menu.html"><i class="fas fa-utensils"></i> Menu</a></li>
+                <li><a class="active" href="vote.html"><i class="fas fa-poll"></i> Vote</a></li>
+                <li><a href="index.html#contact"><i class="fas fa-phone"></i> Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="profile">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <section class="hero">
+        <div>
+            <h1>Vote for Tomorrow's Dish</h1>
+            <p>Help the canteen decide tomorrow's special meal by choosing the dish you want most. Your vote is saved in your browser and updated instantly.</p>
+        </div>
+        <div class="hero-meta">
+            <span class="meta-badge"><i class="fas fa-calendar-day"></i> Tomorrow: <strong id="tomorrow-day"></strong></span>
+            <span class="meta-badge"><i class="fas fa-calendar"></i> Date: <strong id="tomorrow-date"></strong></span>
+        </div>
+    </section>
+
+    <h2 class="section-title">Cast Your Vote</h2>
+    <div class="vote-grid">
+        <section class="vote-panel">
+            <h2>Pick one dish</h2>
+            <form id="vote-form" class="vote-options" aria-labelledby="vote-heading">
+                <button class="vote-submit" type="submit">Submit Vote</button>
+            </form>
+            <div class="vote-footer">
+                <p id="vote-message" class="vote-message">Choose a favorite above, then submit your vote.</p>
+                <button id="reset-votes" class="reset-button" type="button">Reset Votes</button>
+            </div>
+        </section>
+
+        <section class="results-panel">
+            <h2>Current Results</h2>
+            <p>The results are stored locally in your browser so you can see how your choice compares to previous votes.</p>
+            <div id="results-list"></div>
+            <div class="results-summary">
+                <div class="summary-card">
+                    <strong>Total Votes</strong>
+                    <span id="total-votes">0</span>
+                </div>
+                <div class="summary-card">
+                    <strong>Leading Dish</strong>
+                    <span id="leading-dish">No votes yet</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<script>
+const dishOptions = [
+    {
+        id: 'beef-rendang',
+        name: 'Beef Rendang',
+        description: 'Rich and aromatic beef rendang served with steaming white rice.'
+    },
+    {
+        id: 'nasi-goreng',
+        name: 'Nasi Goreng Special',
+        description: 'Spicy fried rice with egg, chicken, shrimp, and crispy topping.'
+    },
+    {
+        id: 'chicken-katsu',
+        name: 'Chicken Katsu Rice',
+        description: 'Crispy chicken cutlet on rice with salad and savory sauce.'
+    },
+    {
+        id: 'grilled-salmon',
+        name: 'Grilled Salmon',
+        description: 'Fresh grilled salmon fillet with lemon butter and vegetables.'
+    }
+];
+
+const voteKey = 'binusVoteCounts';
+const themeKey = 'theme';
+
+function getTomorrow() {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    return tomorrow;
+}
+
+function formatLongDate(date) {
+    return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+function getSavedVotes() {
+    const stored = localStorage.getItem(voteKey);
+    if (!stored) {
+        return {};    }
+    try {
+        return JSON.parse(stored) || {};
+    } catch {
+        return {};
+    }
+}
+
+function saveVotes(votes) {
+    localStorage.setItem(voteKey, JSON.stringify(votes));
+}
+
+function createOption(item) {
+    const row = document.createElement('div');
+    row.className = 'vote-option';
+
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'dish';
+    radio.value = item.id;
+    radio.id = item.id;
+
+    const label = document.createElement('label');
+    label.htmlFor = item.id;
+    label.innerHTML = `<strong>${item.name}</strong><span>${item.description}</span>`;
+
+    row.appendChild(radio);
+    row.appendChild(label);
+    return row;
+}
+
+function renderOptions() {
+    const form = document.getElementById('vote-form');
+    form.innerHTML = '';
+    dishOptions.forEach((option) => {
+        form.appendChild(createOption(option));
+    });
+
+    const submitButton = document.createElement('button');
+    document.createElement('button');
+    submitButton.className = 'vote-submit';
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Submit Vote';
+    form.appendChild(submitButton);
+}
+
+function renderResults() {
+    const votes = getSavedVotes();
+    const resultsList = document.getElementById('results-list');
+    resultsList.innerHTML = '';
+
+    const counts = dishOptions.map((option) => ({
+        ...option,
+        count: Number(votes[option.id] || 0)
+    }));
+
+    const totalVotes = counts.reduce((sum, item) => sum + item.count, 0);
+    const topVote = counts.reduce((best, item) => item.count > best.count ? item : best, { count: -1 });
+
+    counts.forEach((item) => {
+        const itemWrapper = document.createElement('div');
+        itemWrapper.className = 'result-item';
+
+        const labelRow = document.createElement('div');
+        labelRow.className = 'result-label';
+        labelRow.innerHTML = `<span>${item.name}</span><span>${item.count} vote${item.count === 1 ? '' : 's'}</span>`;
+
+        const bar = document.createElement('div');
+        bar.className = 'result-bar';
+        const fill = document.createElement('div');
+        fill.className = 'result-fill';
+        const percent = totalVotes === 0 ? 0 : Math.round((item.count / totalVotes) * 100);
+        fill.style.width = `${percent}%`;
+        fill.setAttribute('aria-label', `${item.name} ${percent} percent`);
+
+        bar.appendChild(fill);
+        itemWrapper.appendChild(labelRow);
+        itemWrapper.appendChild(bar);
+        resultsList.appendChild(itemWrapper);
+    });
+
+    document.getElementById('total-votes').textContent = totalVotes;
+    document.getElementById('leading-dish').textContent = totalVotes === 0 ? 'No votes yet' : `${topVote.name} (${topVote.count} vote${topVote.count === 1 ? '' : 's'})`;
+}
+
+function updateHeroMeta() {
+    const tomorrow = getTomorrow();
+    const day = tomorrow.toLocaleDateString('en-US', { weekday: 'long' });
+    document.getElementById('tomorrow-day').textContent = day;
+    document.getElementById('tomorrow-date').textContent = formatLongDate(tomorrow);
+}
+
+function handleVoteSubmit(event) {
+    event.preventDefault();
+    const selected = document.querySelector('input[name="dish"]:checked');
+    const message = document.getElementById('vote-message');
+
+    if (!selected) {
+        message.textContent = 'Please select one dish before submitting your vote.';
+        return;
+    }
+
+    const votes = getSavedVotes();
+    const choice = selected.value;
+    votes[choice] = Number(votes[choice] || 0) + 1;
+    saveVotes(votes);
+
+    localStorage.setItem('hasVoted', 'true');
+
+    message.textContent = 'Thanks! Your vote has been recorded.';
+    renderResults();
+}
+
+function handleReset() {
+    localStorage.removeItem(voteKey);
+    localStorage.removeItem('hasVoted');
+    document.getElementById('vote-message').textContent = 'All votes have been reset.';
+    renderResults();
+}
+
+function getStoredTheme() {
+    const stored = localStorage.getItem(themeKey);
+    if (stored === 'dark' || stored === 'light') {
+        return stored;
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(themeKey, theme);
+    const icon = document.querySelector('#theme-toggle i');
+    if (icon) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+function initThemeToggle() {
+    applyTheme(getStoredTheme());
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+}
+
+function isTomorrowSunday() {
+    const tomorrow = getTomorrow();
+    return tomorrow.getDay() === 0;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    updateHeroMeta();
+    initThemeToggle();
+    if (isTomorrowSunday()) {
+        document.getElementById('vote-form').innerHTML = '<p>The canteen is closed on Sundays. No votes for today.</p>';
+        document.getElementById('vote-message').textContent = 'No voting available for Sunday.';
+    } else {
+    renderOptions();
+    renderResults();
+    document.getElementById('vote-form').addEventListener('submit', handleVoteSubmit);
+    document.getElementById('reset-votes').addEventListener('click', handleReset);
+    }
+});
+</script>
+</body>
+</html>
